@@ -64,7 +64,7 @@ graph TD
     User([SRE / Support / Customer]) -->|File Outage| Dashboard[Web UI Dashboard]
     Dashboard -->|POST /run_sse| FastAPI[FastAPI Server]
     
-    subgraph Multi-Agent Workspace (Google ADK)
+    subgraph "Multi-Agent Workspace (Google ADK)"
         FastAPI -->|Orchestrate| Coordinator[Coordinator Agent]
         Coordinator -->|1. Analyze Ticket| TA[Ticket Analyzer Agent]
         Coordinator -->|2. Pull Health & Logs| LA[Log Analyzer Agent]
@@ -73,7 +73,7 @@ graph TD
         Coordinator -->|5. Document & Close| DA[Documentation Agent]
     end
 
-    subgraph Model Context Protocol (MCP) Servers
+    subgraph "Model Context Protocol (MCP) Servers"
         TA -->|Read/Write| JiraMCP[Jira MCP Server]
         LA -->|Fetch System Metrics| LogsMCP[Logs & Monitoring MCP Server]
         RCA -->|Search SOPs| KBMCP[Knowledge Base MCP Server]
