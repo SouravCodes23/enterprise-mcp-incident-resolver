@@ -61,6 +61,8 @@ The platform operates on a three-tier architecture:
 2. **FastAPI & Google ADK (Agent Engine)**: Coordinates the hierarchical multi-agent SRE workflow.
 3. **Model Context Protocol (MCP Servers)**: Local secure stdin/stdout transport adapters wrapping Jira, Logs/Monitoring, and the Operations Knowledge Base.
 
+![Antigravity Nano Banana SRE Architecture](assets/banana_architecture_diagram.png)
+
 ```mermaid
 graph TD
     User([SRE / Support / Customer]) -->|File Outage| Dashboard[Web UI Dashboard]
