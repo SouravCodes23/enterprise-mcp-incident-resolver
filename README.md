@@ -1,7 +1,5 @@
 # 🚀 Antigravity: Enterprise-Grade AI Incident Management Platform
 
-![Antigravity Banner](assets/antigravity_banner.png)
-
 [![Google ADK](https://img.shields.io/badge/Framework-Google%20ADK-3b82f6?style=for-the-badge&logo=google)](https://github.com/google/adk)
 [![Model Context Protocol](https://img.shields.io/badge/Protocol-MCP-10b981?style=for-the-badge&logo=google-cloud)](https://modelcontextprotocol.io)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
@@ -95,6 +93,59 @@ graph TD
 ## 🤖 AI Multi-Agent Workflow
 
 Every incident ticket runs through a highly structured, sequential workflow:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User Dashboard (Web)
+    participant API as FastAPI Server
+    participant COORD as Coordinator Agent (ADK)
+    participant TA as Ticket Analyzer
+    participant LA as Log Analyzer
+    participant RCA as RCA Agent
+    participant PA as Planner Agent
+    participant DA as Documentation Agent
+    participant MCP as MCP Servers (Jira / Logs / KB)
+
+    User->>API: POST /run_sse (Trigger Resolution)
+    API->>COORD: Initialize Session & Run Coordinator
+    
+    %% Step 1: Ticket Analyzer
+    COORD->>TA: transfer_to_agent (Triage details)
+    TA->>MCP: get_ticket_details(ticket_id) [Jira MCP]
+    MCP-->>TA: Return description, service, priority
+    TA-->>COORD: Return parsed ticket metadata
+    
+    %% Step 2: Log Analyzer
+    COORD->>LA: transfer_to_agent (Fetch indicators)
+    LA->>MCP: check_service_health(service) [Logs MCP]
+    LA->>MCP: fetch_service_logs(service) [Logs MCP]
+    MCP-->>LA: Return active CPU, memory, connection status & logs
+    LA-->>COORD: Return diagnosed metric & log traces
+    
+    %% Step 3: RCA Agent
+    COORD->>RCA: transfer_to_agent (Find runbooks)
+    RCA->>MCP: list_kb_entries(query) [KB MCP]
+    MCP-->>RCA: Return matching SOP (e.g. KB-001 / KB-002) steps
+    RCA-->>COORD: Return root cause & applicable runbook steps
+    
+    %% Step 4: Planner Agent
+    COORD->>PA: transfer_to_agent (Draft steps)
+    PA-->>COORD: Return structured remediation plan & validation checklist
+    
+    %% Step 5: Doc Agent
+    COORD->>DA: transfer_to_agent (Close & Document)
+    DA->>MCP: update_ticket_status(Resolved, comment) [Jira MCP]
+    DA->>MCP: add_kb_entry(title, service, steps) [KB MCP]
+    MCP-->>DA: Confirm ticket updated & new runbook logged (e.g. KB-006)
+    DA-->>COORD: Return documentation final report
+    
+    %% Finish
+    COORD-->>API: Stream final postmortem summary (Technical & Business version)
+    API-->>User: Close SSE Stream
+    User->>API: POST /api/incidents/{id}/status (Persist Resolved / Unresolved status)
+    User->>API: GET /api/incidents (Refresh Active list, counters, and badges in-place)
+```
 
 | Step | Agent | Role / Description |
 | :--- | :--- | :--- |
