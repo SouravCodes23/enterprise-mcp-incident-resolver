@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  incident-resolver:
+    build: .
+    ports:
+      - "8000:8080" # Maps local port 8000 to container port 8080 (which Dockerfile uses)
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GOOGLE_GENAI_USE_VERTEXAI=False
+      - ALLOW_ORIGINS=*
+    volumes:
+      # Keep data database changes persistent on host
+      - ./app/data:/code/app/data
+    env_file:
+      - .env

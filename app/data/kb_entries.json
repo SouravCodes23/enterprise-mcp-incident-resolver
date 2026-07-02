@@ -1,0 +1,86 @@
+[
+  {
+    "id": "KB-001",
+    "title": "Database Connection Pool Exhaustion Recovery SOP",
+    "service": "payment-service",
+    "keywords": [
+      "connection",
+      "pool",
+      "exhausted",
+      "timeout",
+      "504",
+      "database"
+    ],
+    "steps": "1. Verify DB health. If DB is overloaded, scale DB read-replicas.\n2. In payment-service environment settings, increase DB_POOL_SIZE from 100 to 150.\n3. Restart payment-service instances sequentially (rolling update) to clear stale/leaked connections.\n4. Check Grafana dashboard to verify active connections drop below 70%."
+  },
+  {
+    "id": "KB-002",
+    "title": "S3 Upload Permission Fix (403 Forbidden)",
+    "service": "user-service",
+    "keywords": [
+      "s3",
+      "upload",
+      "403",
+      "forbidden",
+      "avatar",
+      "accessDenied"
+    ],
+    "steps": "1. Check IAM policy of user-service role. Ensure it has s3:PutObject permission for bucket 'user-avatars-prod'.\n2. Verify S3 bucket CORS configuration matches client origins.\n3. Re-apply Terraform bucket policy module if drift is detected."
+  },
+  {
+    "id": "KB-003",
+    "title": "Frontend Bundle Reference Error Troubleshooting",
+    "service": "frontend-service",
+    "keywords": [
+      "reference",
+      "bundle",
+      "blank",
+      "javascript",
+      "syntax"
+    ],
+    "steps": "1. Inspect recent Github Actions deployment logs. Look for Webpack/Vite build errors.\n2. Re-trigger frontend-service build pipeline with clean build caches.\n3. Re-deploy the built static assets to CDN."
+  },
+  {
+    "id": "KB-004",
+    "title": "Payment service DB connection pool exhaustion",
+    "service": "payment-service",
+    "keywords": [
+      "payment",
+      "exhaustion",
+      "pool",
+      "connection",
+      "service"
+    ],
+    "steps": "1. Identify the service experiencing database connection pool exhaustion. 2. Access the configuration settings for the service's database connection. 3. Increase the `max_active_connections` parameter to accommodate higher load. 4. Restart the service to apply the new configuration. 5. Monitor database connection metrics to ensure stable operation."
+  },
+  {
+    "id": "KB-005",
+    "title": "Frontend Service Dashboard Blank Page Resolution",
+    "service": "frontend-service",
+    "keywords": [
+      "page",
+      "service",
+      "frontend",
+      "blank",
+      "resolution",
+      "dashboard"
+    ],
+    "steps": "1. Identify the exact syntax error location in bundle.js (e.g., line 452, missing closing brace).\n2. Rollback the `frontend-service` deployment to the last known stable version that did not contain the syntax error.\n3. Alternatively, if a quick fix is available, deploy a hotfix to correct the syntax error in `bundle.js`.\n4. Verify the resolution by checking `frontend-service` health, logs (no more compile errors), and performing User Acceptance Testing (UAT) to ensure the dashboard loads correctly."
+  },
+  {
+    "id": "KB-006",
+    "title": "Resolve S3 Access Denied (403 Forbidden) for user-service photo uploads",
+    "service": "user-service",
+    "keywords": [
+      "denied",
+      "403",
+      "photo",
+      "access",
+      "user-service",
+      "resolve",
+      "forbidden",
+      "uploads"
+    ],
+    "steps": "1. **Identify IAM Role/User:** Determine the specific AWS IAM role or user that the `user-service` utilizes for authenticating and interacting with AWS S3. This information can typically be found in the service's deployment configuration, EC2 instance profiles, or Kubernetes service accounts.\n2. **Review IAM Policy:** Access the AWS Management Console or use AWS CLI/SDK to inspect the IAM policy currently attached to the identified role/user. Focus on policy statements related to S3 access.\n3. **Update IAM Policy:** Modify the existing IAM policy to explicitly grant the `s3:PutObject` action on the `user-avatars-prod` S3 bucket.\n    *   **Ensure the policy includes a statement similar to:**\n        ```json\n        {\n            \"Effect\": \"Allow\",\n            \"Action\": [\n                \"s3:PutObject\"\n            ],\n            \"Resource\": [\n                \"arn:aws:s3:::user-avatars-prod/*\"\n            ]\n        }\n        ```\n    *   **Note:** The `Resource` ARN `arn:aws:s3:::user-avatars-prod/*` is crucial for allowing uploads to any object within the specified bucket.\n4. **Test Resolution:** Prompt a user to attempt uploading a profile photo through the application interface to verify that the 403 Forbidden error is no longer returned and that the upload completes successfully."
+  }
+]

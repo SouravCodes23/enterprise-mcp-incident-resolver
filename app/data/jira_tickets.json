@@ -1,0 +1,62 @@
+{
+  "INC-101": {
+    "id": "INC-101",
+    "title": "Payment gateway timeout errors",
+    "service": "payment-service",
+    "description": "Users are experiencing 504 gateway timeouts when attempting to checkout. DB pool exhaustion suspected.",
+    "priority": "High",
+    "status": "Open",
+    "comments": []
+  },
+  "INC-102": {
+    "id": "INC-102",
+    "title": "User avatar upload failure",
+    "service": "user-service",
+    "description": "S3 upload fails with 403 Forbidden. Upload bucket permissions might have changed.",
+    "priority": "Medium",
+    "status": "Open",
+    "comments": []
+  },
+  "INC-103": {
+    "id": "INC-103",
+    "title": "Frontend blank page on dashboard loading",
+    "service": "frontend-service",
+    "description": "Dashboard console shows 'uncaught reference error' in bundle.js.",
+    "priority": "High",
+    "status": "Open",
+    "comments": []
+  },
+  "INC-104": {
+    "id": "INC-104",
+    "title": "Payment checkout page returning 500 Internal Server Error",
+    "service": "payment-service",
+    "description": "Outage reported on checkout endpoint. System logs show: 'ERROR: Database Connection Pool Exhausted. Max active connections (100) exceeded.' Transactions are failing.",
+    "priority": "High",
+    "status": "Resolved",
+    "comments": [
+      "Root Cause: Database Connection Pool Exhausted. Max active connections (100) exceeded. Resolution: Increased database connection pool size to resolve the issue."
+    ]
+  },
+  "INC-105": {
+    "id": "INC-105",
+    "title": "Dashboard reporting blank page on loading",
+    "service": "frontend-service",
+    "description": "Users are complaining that when they log in, they see a blank page. The browser console reports a javascript reference loading failure.",
+    "priority": "High",
+    "status": "Resolved",
+    "comments": [
+      "Incident resolved. Root cause: Syntax error: Missing closing brace in bundle.js line 452, preventing UI assets from loading for the frontend-service. Resolution: Rolled back frontend-service deployment to a stable version, or applied a hotfix for the syntax error."
+    ]
+  },
+  "INC-106": {
+    "id": "INC-106",
+    "title": "User profile photo upload returning 403 Forbidden",
+    "service": "user-service",
+    "description": "Users are reporting that they cannot update their profile pictures. The browser console shows an AccessDenied network error when POSTing to the upload endpoint.",
+    "priority": "Medium",
+    "status": "Resolved",
+    "comments": [
+      "Incident INC-106 (User profile photo upload returning 403 Forbidden) has been resolved. The root cause was identified as an AWS IAM permission issue: the `user-service` lacked `s3:PutObject` permissions for the `user-avatars-prod` S3 bucket. The resolution involved updating the IAM policy attached to the `user-service`'s role to explicitly grant `s3:PutObject` access to the `user-avatars-prod` S3 bucket. Subsequent tests confirmed successful profile photo uploads."
+    ]
+  }
+}

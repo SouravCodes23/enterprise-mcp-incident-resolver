@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Incident Resolver - Multi-Agent Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo"><i class="fa-solid fa-circle-nodes"></i></div>
+                <div class="brand-name">
+                    <h2>Antigravity</h2>
+                    <span>Incident Resolver</span>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-tab="dashboard-tab" id="nav-dashboard">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-tab="new-ticket-tab" id="nav-new-ticket">
+                    <i class="fa-solid fa-ticket"></i> Report Incident
+                </a>
+                <a href="#" class="nav-item" data-tab="kb-tab" id="nav-kb">
+                    <i class="fa-solid fa-book-bookmark"></i> Knowledge Base
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">Multi-Agent Engine Online</span>
+                </div>
+                <div class="sdk-version">Google ADK v2.3.0 · MCP v1.0</div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-workspace">
+            <header class="workspace-header">
+                <div class="header-title">
+                    <h1 id="page-title">Incidents Dashboard</h1>
+                    <p id="page-subtitle">Monitor and resolve active system outages with Google ADK agents</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="btn-refresh-tickets">
+                        <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- Workspace Body -->
+            <div class="workspace-body">
+                
+                <!-- TAB 1: Incidents Dashboard -->
+                <div class="tab-content active-content" id="dashboard-tab">
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Panel: Ticket Feed -->
+                        <div class="glass-panel feed-panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-list-check"></i> Active Incidents</h3>
+                                <span class="badge" id="ticket-count">0 Tickets</span>
+                            </div>
+                            <div class="ticket-list" id="ticket-list-container">
+                                <!-- Loaded dynamically via JS -->
+                                <div class="loading-state">
+                                    <i class="fa-solid fa-spinner fa-spin"></i> Loading tickets...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Incident Investigation Detail -->
+                        <div class="glass-panel detail-panel" id="incident-detail-panel">
+                            <!-- Selected Ticket details load here -->
+                            <div class="empty-state">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <h3>No Incident Selected</h3>
+                                <p>Select an active incident from the list to begin investigation and trigger resolution.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TAB 2: Submit Ticket -->
+                <div class="tab-content" id="new-ticket-tab">
+                    <div class="glass-panel form-panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-circle-plus"></i> Submit New Incident Ticket</h3>
+                        </div>
+                        <form id="create-incident-form" class="incident-form">
+                            <div class="form-group">
+                                <label for="ticket-title">Incident Summary</label>
+                                <input type="text" id="ticket-title" required placeholder="e.g. Memory leak causing application crash">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ticket-service">Affected Service</label>
+                                    <select id="ticket-service" required>
+                                        <option value="" disabled selected>Select affected service</option>
+                                        <option value="authentication-service">Authentication Service</option>
+                                        <option value="identity-provider-sso">Identity Provider (SSO)</option>
+                                        <option value="user-service">User Service</option>
+                                        <option value="profile-service">Profile Service</option>
+                                        <option value="payment-service">Payment Service</option>
+                                        <option value="billing-service">Billing Service</option>
+                                        <option value="subscription-service">Subscription Service</option>
+                                        <option value="order-service">Order Service</option>
+                                        <option value="inventory-service">Inventory Service</option>
+                                        <option value="product-catalog-service">Product Catalog Service</option>
+                                        <option value="shipping-service">Shipping Service</option>
+                                        <option value="notification-service">Notification Service</option>
+                                        <option value="email-service">Email Service</option>
+                                        <option value="sms-service">SMS Service</option>
+                                        <option value="search-service">Search Service</option>
+                                        <option value="recommendation-engine">Recommendation Engine</option>
+                                        <option value="analytics-service">Analytics Service</option>
+                                        <option value="reporting-service">Reporting Service</option>
+                                        <option value="dashboard-service">Dashboard Service</option>
+                                        <option value="api-gateway">API Gateway</option>
+                                        <option value="load-balancer">Load Balancer</option>
+                                        <option value="cdn">CDN</option>
+                                        <option value="frontend-service">Frontend Service</option>
+                                        <option value="backend-api">Backend API</option>
+                                        <option value="customer-portal">Customer Portal</option>
+                                        <option value="admin-portal">Admin Portal</option>
+                                        <option value="crm-integration">CRM Integration</option>
+                                        <option value="erp-integration">ERP Integration</option>
+                                        <option value="database-service">Database Service</option>
+                                        <option value="redis-cache">Redis Cache</option>
+                                        <option value="kafka-event-streaming">Kafka/Event Streaming</option>
+                                        <option value="message-queue">Message Queue</option>
+                                        <option value="object-storage-aws-s3">Object Storage (AWS S3)</option>
+                                        <option value="file-upload-service">File Upload Service</option>
+                                        <option value="media-service">Media Service</option>
+                                        <option value="document-service">Document Service</option>
+                                        <option value="logging-service">Logging Service</option>
+                                        <option value="monitoring-service">Monitoring Service</option>
+                                        <option value="alerting-service">Alerting Service</option>
+                                        <option value="cicd-pipeline">CI/CD Pipeline</option>
+                                        <option value="kubernetes-cluster">Kubernetes Cluster</option>
+                                        <option value="docker-infrastructure">Docker Infrastructure</option>
+                                        <option value="dns-service">DNS Service</option>
+                                        <option value="ssl-certificate-management">SSL Certificate Management</option>
+                                        <option value="third-party-api-integration">Third-party API Integration</option>
+                                        <option value="ai-agent-service">AI Agent Service</option>
+                                        <option value="llm-gateway">LLM Gateway</option>
+                                        <option value="knowledge-base-service">Knowledge Base Service</option>
+                                        <option value="jira-integration">Jira Integration</option>
+                                        <option value="slack-integration">Slack Integration</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ticket-priority">Priority Level</label>
+                                    <select id="ticket-priority" required>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium" selected>Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Critical">Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ticket-description">Detailed Description</label>
+                                <textarea id="ticket-description" rows="5" required placeholder="Describe the symptoms, errors, or customer impact..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-paper-plane"></i> File Ticket
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Knowledge Base -->
+                <div class="tab-content" id="kb-tab">
+                    <div class="kb-search-container">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="kb-search-input" placeholder="Search Runbooks, SOPs, FAQs, or keyword tags...">
+                            <button class="btn btn-primary" id="btn-search-kb">Search</button>
+                        </div>
+                    </div>
+                    <div class="kb-grid" id="kb-entries-container">
+                        <!-- Loaded dynamically via JS -->
+                        <div class="loading-state">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Loading Knowledge Base...
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Script imports -->
+    <script src="/static/index.js"></script>
+</body>
+</html>
