@@ -208,6 +208,7 @@ app.routes[:] = [r for r in app.routes if r.path != "/"]
 
 
 @app.get("/")
+@app.head("/")
 def read_root():
     index_file = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.exists(index_file):
