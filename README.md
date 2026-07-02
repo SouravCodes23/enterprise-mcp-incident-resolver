@@ -1,5 +1,7 @@
 # 🚀 Antigravity: Enterprise-Grade AI Incident Management Platform
 
+![Antigravity Banner](assets/antigravity_banner.png)
+
 [![Google ADK](https://img.shields.io/badge/Framework-Google%20ADK-3b82f6?style=for-the-badge&logo=google)](https://github.com/google/adk)
 [![Model Context Protocol](https://img.shields.io/badge/Protocol-MCP-10b981?style=for-the-badge&logo=google-cloud)](https://modelcontextprotocol.io)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
