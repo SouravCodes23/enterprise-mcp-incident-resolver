@@ -98,6 +98,8 @@ graph TD
 
 Every incident ticket runs through a highly structured, sequential workflow:
 
+![Antigravity Multi-Agent Workflow](assets/multi_agent_workflow_diagram.png)
+
 ```mermaid
 sequenceDiagram
     autonumber
